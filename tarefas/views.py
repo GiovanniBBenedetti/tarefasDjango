@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from .forms import TarefasForm
+from .models import TarefaModel
 from django.http import HttpRequest
 # Create your views here.
 
 
 def tarefas_home(request):
     contexto = {
-        "nome":"Giovanni"
+        "nome":"Giovanni",
+        "tarefas": TarefaModel.objects.all()
     }
     return render(request, 'tarefas/home.html', contexto)
 
