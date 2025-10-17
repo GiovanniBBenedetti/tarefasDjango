@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .forms import TarefasForm
+from django.http import HttpRequest
 # Create your views here.
 
 
@@ -9,5 +10,14 @@ def tarefas_home(request):
     }
     return render(request, 'tarefas/home.html', contexto)
 
-def adicionar_tarefas(request):
-    return HttpResponse("Adicionar tarefas")
+
+def adicionar_tarefas(request:HttpRequest):
+    if request.method == "POST":
+        formulario = TarefasForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect("tarefas:home")
+    contexto = {
+        "form": TarefasForm
+    }
+    return render(request, 'tarefas/adicionar.html', contexto)
